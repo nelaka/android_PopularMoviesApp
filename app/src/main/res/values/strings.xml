@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="poster_desc">poster of the movie</string>
+
+    <!-- Used to open Settings Menu from MainActivity and DetailActivity -->
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_detail">Movie\'s Details</string>
+
+    <!-- Label for the sort by preference -->
+    <string name="pref_sort_by_label">Sort by…</string>
+
+    <!-- Label for popular option in sort by preference -->
+    <string name="pref_sort_by_label_popular">Popularity</string>
+
+    <!-- Label for top rated option in sort by preference -->
+    <string name="pref_sort_by_label_top_rated">Top Rated</string>
+
+    <!-- Label for top rated option in sort by preference -->
+    <string name="pref_sort_by_label_fav">User Favorites</string>
+
+    <!-- Key name for sort by preference in SharedPreferences -->
+    <string name="pref_sort_by_key" translatable="false">sort_by</string>
+
+    <!-- Value in SharedPreferences for popular option -->
+    <string name="pref_sort_by_popular" translatable="false">popular</string>
+
+    <!-- Value in SharedPreferences for top rated option -->
+    <string name="pref_sort_by_top_rated" translatable="false">top_rated</string>
+
+    <!-- Value in SharedPreferences for user favorites option -->
+    <string name="pref_sort_by_fav" translatable="false">fav</string>
+
+    <!-- Value in SharedPreferences for default option -->
+    <string name="pref_sort_by_default" translatable="false">popular</string>
+
+    <string name="vote_average">Vote Average:</string>
+    <string name="release_date">Release Date:</string>
+
+    <string name="error_message">
+        A network error has occurred. No connection. Please try again.
+    </string>
+    <string name="movie_s_vote_average">Movie\'s Vote Average</string>
+    <string name="movie_s_date">Movie\'s Date</string>
+    <string name="movie_s_desc">Movie\'s Desc</string>
+    <string name="movie_s_title">Movie\'s Title</string>
+
+    <string name="trailer_desc">Trailer of the movie</string>
+
+    <string name="msg_added_to_fav">The movie is now in favorite list</string>
+    <string name="msg_removed_from_fav">The movie was removed from favorite list</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_share">Share</string>
+    <string name="review_s_title">Review</string>
+    <string name="review">mpla mpla mpla mlpa</string>
+
+</resources>

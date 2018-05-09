@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/movie_poster_iv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/poster_height"
+                android:layout_marginEnd="0dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:contentDescription="@string/poster_desc"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                style="@style/FabStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_favorite_border_white_24dp"
+                app:backgroundTint="@color/colorPrimary"
+                app:fabSize="normal"
+                app:layout_constraintBottom_toBottomOf="@+id/movie_poster_iv"
+                app:layout_constraintEnd_toEndOf="@+id/movie_poster_iv"
+                app:layout_constraintHorizontal_bias="0.914"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/movie_poster_iv" />
+
+
+            <TextView
+                android:id="@+id/movie_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_padding_small"
+                android:layout_marginTop="@dimen/default_padding_small"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                android:text="@string/movie_s_title"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/movie_poster_iv" />
+
+            <TextView
+                android:id="@+id/movie_desc_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="@dimen/default_padding_small"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:text="@string/movie_s_desc"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/movie_title_tv" />
+
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:text="@string/release_date"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/movie_desc_tv" />
+
+            <TextView
+                android:id="@+id/movie_release_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_padding_small"
+                android:layout_marginEnd="@dimen/default_padding_small"
+                android:layout_marginStart="@dimen/default_padding_small"
+                android:layout_marginTop="@dimen/default_padding_small"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                android:text="@string/movie_s_date"
+                app:layout_constraintBottom_toTopOf="@+id/textView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.27"
+                app:layout_constraintStart_toEndOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/movie_desc_tv"
+                app:layout_constraintVertical_bias="0.0" />
+
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                android:text="@string/vote_average"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+            <TextView
+                android:id="@+id/movie_vote_average_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginBottom="@dimen/default_padding_small"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="@dimen/default_padding_small"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                android:text="@string/movie_s_vote_average"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView3"
+                app:layout_constraintStart_toEndOf="@+id/textView2"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                android:text="("
+                app:layout_constraintStart_toEndOf="@+id/movie_vote_average_tv"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+            <TextView
+                android:id="@+id/movie_vote_count_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_padding_small"
+                android:layout_marginStart="168dp"
+                android:layout_marginTop="@dimen/default_padding_small"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                android:text="Movie's Vote Count"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView3"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_padding_small"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                android:text=" votes)"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView3"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
+            <!-- A progress bar that will be shown to users to indicate that movies data are loading -->
+            <ProgressBar
+                android:id="@+id/pb_loading_indicator"
+                android:layout_width="@dimen/progress_bar_dimension"
+                android:layout_height="@dimen/progress_bar_dimension"
+                android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="100dp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/movie_poster_iv" />
+
+            <TextView
+                android:id="@+id/tv_error_message_display"
+                android:layout_width="wrap_content"
+                android:layout_height="127dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:padding="@dimen/default_padding"
+                android:text="@string/error_message"
+                android:textSize="@dimen/text_size_error_message"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/trailers_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/default_padding_small" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/reviews_rv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/reviews_height"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/default_padding_small" />
+
+
+    </LinearLayout>
+
+
+</ScrollView>
