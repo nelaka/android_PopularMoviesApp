@@ -18,23 +18,15 @@ public class Trailer implements Parcelable {
     };
 
     @SerializedName("name")
-    private String mName;
+    private final String mName;
     @SerializedName("id")
-    private String mMediaId;
+    private final String mMediaId;
     @SerializedName("key")
-    private String mKey;
+    private final String mKey;
     @SerializedName("type")
-    private String mType;
+    private final String mType;
     @SerializedName("site")
-    private String mSite;
-
-    public Trailer(String name, String mediaId, String key, String type, String site) {
-        mName = name;
-        mMediaId = mediaId;
-        mKey = key;
-        mType = type;
-        mSite = site;
-    }
+    private final String mSite;
 
     private Trailer(Parcel in) {
         mName = in.readString();
@@ -44,18 +36,9 @@ public class Trailer implements Parcelable {
         mSite = in.readString();
     }
 
-    public String getTitle() {
-        return mName;
-    }
-
-    public String getType() {
-        return mType;
-    }
-
     public String getKey() {
         return mKey;
     }
-
 
     @Override
     public int describeContents() {

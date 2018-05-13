@@ -12,8 +12,6 @@ import com.example.android.android_popularmoviesapp.data.MoviesContract;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final String TAG = SettingsFragment.class.getSimpleName();
-
     public SettingsFragment() {
         // Required empty public constructor
     }
@@ -29,17 +27,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
             if (prefIndex >= 0) {
                 preference.setSummary(listPreference.getEntries()[prefIndex]);
-              /*  if (stringValue.equals(getString(R.string.pref_sort_by_fav))) {
-                    getActivity().getContentResolver().notifyChange(MoviesContract.MoviesEntry.CONTENT_URI, null);
-                }*/
             } else {
                 // For other preferences, set the summary to the value's simple string representation.
                 preference.setSummary(stringValue);
             }
         }
-
     }
-
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

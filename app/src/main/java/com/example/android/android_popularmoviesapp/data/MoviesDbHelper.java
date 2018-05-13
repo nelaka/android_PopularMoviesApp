@@ -1,9 +1,5 @@
 package com.example.android.android_popularmoviesapp.data;
 
-/**
- * Created by nelaka on 26/3/2018.
- */
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -19,7 +15,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper{
     * This is the name of our database. Database names should be descriptive and end with the
     * .db extension.
     */
-    public static final String DATABASE_NAME = "movies.db";
+    private static final String DATABASE_NAME = "movies.db";
 
     /*
     * If you change the database schema, you must increment the database version or the onUpgrade
@@ -67,7 +63,6 @@ public class MoviesDbHelper extends SQLiteOpenHelper{
         /*
          * Execute SQL with the execSQL method of the SQLite database object.
          */
-
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIES_TABLE);
     }
 

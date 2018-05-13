@@ -20,34 +20,19 @@ public class TrailersResponse implements Parcelable {
     };
 
     @SerializedName("id")
-    private String mId;
+    private final String mId;
     @SerializedName("page")
-    private String mPage;
+    private final String mPage;
     @SerializedName("results")
-    private List<Trailer> mTrailers;
+    private final List<Trailer> mTrailers;
     @SerializedName("total_results")
-    private String mTotalResults;
-
-    public TrailersResponse(String id, String page, List<Trailer> trailers, String totalResults) {
-        mId = id;
-        mPage = page;
-        mTrailers = trailers;
-        mTotalResults = totalResults;
-    }
+    private final String mTotalResults;
 
     private TrailersResponse(Parcel in) {
         mId = in.readString();
         mPage = in.readString();
         mTrailers = in.readArrayList(Trailer.class.getClassLoader());
         mTotalResults = in.readString();
-    }
-
-    public String getId() {
-        return mId;
-    }
-
-    public void setId(String id) {
-        mId = id;
     }
 
     public List<Trailer> getTrailers() {
@@ -66,5 +51,4 @@ public class TrailersResponse implements Parcelable {
         out.writeList(mTrailers);
         out.writeString(mTotalResults);
     }
-
 }

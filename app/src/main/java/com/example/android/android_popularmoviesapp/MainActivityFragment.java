@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
@@ -38,10 +37,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_OK;
+
 public class MainActivityFragment extends Fragment implements MoviesAdapter.MoviesAdapterOnClickHandler,
         FavMoviesAdapter.FavMoviesAdapterOnClickHandler, SharedPreferences.OnSharedPreferenceChangeListener {
+    private static final int CHANGES_IN_FAV_MOVIES = 1;  // The request code
     private static final String TAG = MainActivityFragment.class.getSimpleName();
-
     private static boolean PREFERENCES_HAVE_BEEN_UPDATED = false;
     @BindView(R.id.movies_rv)
     RecyclerView mRecyclerView;
@@ -49,13 +50,14 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
     ProgressBar mLoadingIndicator;
     @BindView(R.id.tv_error_message_display)
     TextView mErrorMessageDisplay;
+    @BindView(R.id.tv_no_fav_movies_display)
+    TextView mNoFavMovieMessageDisplay;
     private ArrayList<Movie> mMovies, mFavMovies;
     private MoviesAdapter mMoviesAdapter;
     private FavMoviesAdapter mFavMoviesAdapter;
     private Context mContext;
-    private Cursor mCursor;
-    private String mSortBy;
-    private MoviesResponse mResults;
+    RecyclerView.OnScrollListener mScrollListener;
+    private int mPosition;
 
     public MainActivityFragment() {
         // Required empty public constructor
@@ -64,43 +66,19 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
-        } else {
-            mMovies = savedInstanceState.getParcelableArrayList("movies");
-            mFavMovies = savedInstanceState.getParcelableArrayList("fav_movies");
-        }
         mContext = getActivity();
-
-
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("movies", mMovies);
-        outState.putParcelableArrayList("fav_movies", mFavMovies);
-
-        super.onSaveInstanceState(outState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, rootView);
 
-        //List<Movie> fakeList = new ArrayList<>();
+        mMoviesAdapter = new MoviesAdapter(mContext, this);
+        mFavMoviesAdapter = new FavMoviesAdapter(mContext, this);
 
-        mSortBy = MoviesPreferences.getPreferredSortBy(mContext);
-        String favSortBy = mContext.getString(R.string.pref_sort_by_fav);
-        mMoviesAdapter = new MoviesAdapter(mContext, /*fakeList,*/ this);
-        mFavMoviesAdapter = new FavMoviesAdapter(mContext, /* fakeList,*/ mCursor, this);
-      //  if (!favSortBy.equals(mSortBy)) {
-            moviesRequest(Utils.theMovieDbApiKey, mSortBy);
-       // } else {
-
-         //   moviesFromDB();
-       // }
+        moviesRequest();
 
         PreferenceManager.getDefaultSharedPreferences(mContext)
                 .registerOnSharedPreferenceChangeListener(this);
@@ -110,24 +88,33 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
 
     @Override
     public void onClick(Movie movie) {
-
         Intent intent = new Intent(mContext, DetailActivity.class);
         intent.putExtra("movie", movie);
 
         mContext.startActivity(intent);
+        startActivityForResult(intent, CHANGES_IN_FAV_MOVIES);
     }
 
     private void showErrorMessage() {
         /* First, hide the currently visible data */
         mRecyclerView.setVisibility(View.INVISIBLE);
+        mNoFavMovieMessageDisplay.setVisibility(View.INVISIBLE);
         /* Then, show the error */
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
+    }
+
+    private void showNoFavMovieMessage() {
+        /* First, hide the currently visible data */
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+        /* Then, show the no favorite movie message */
+        mNoFavMovieMessageDisplay.setVisibility(View.VISIBLE);
     }
 
     private void showMovieDataView() {
         /* First, make sure the error is invisible */
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
-
+        mNoFavMovieMessageDisplay.setVisibility(View.INVISIBLE);
         /* Then, make sure the movies are visible */
         mRecyclerView.setVisibility(View.VISIBLE);
     }
@@ -143,13 +130,10 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
 
         if (PREFERENCES_HAVE_BEEN_UPDATED) {
             Log.d(TAG, "onStart: preferences were updated");
-            moviesRequest(Utils.theMovieDbApiKey, mSortBy);
-
+            moviesRequest();
             PREFERENCES_HAVE_BEEN_UPDATED = false;
         }
     }
-
-
 
     @Override
     public void onDestroy() {
@@ -160,8 +144,11 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
 
-    public void moviesRequest(String api_key, String sortBy) {
-        if (api_key.isEmpty()) {
+    private void moviesRequest() {
+        String sortBy;
+        String API_KEY = Utils.theMovieDbApiKey;
+
+        if (API_KEY.isEmpty()) {
             Toast.makeText(mContext, "Please obtain your API KEY first from themoviedb.org", Toast.LENGTH_LONG).show();
             return;
         }
@@ -178,20 +165,14 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
          * change the child layout size in the RecyclerView
          */
         mRecyclerView.setHasFixedSize(true);
-
+        mRecyclerView.addOnScrollListener(mScrollListener);
         sortBy = MoviesPreferences.getPreferredSortBy(mContext);
 
-        if (sortBy.equals(mContext.getString(R.string.pref_sort_by_fav))) {
-            moviesFromDB();
-
-        }
-        else{
+        if (!sortBy.equals(mContext.getString(R.string.pref_sort_by_fav))) {
 
             ApiInterface apiService =
                     APIClient.getClient().create(ApiInterface.class);
-
-            Call<MoviesResponse> call = apiService.getMovies(sortBy, api_key);
-
+            Call<MoviesResponse> call = apiService.getMovies(sortBy, API_KEY);
             call.enqueue(new Callback<MoviesResponse>() {
 
                 @Override
@@ -216,32 +197,21 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
                     Log.e(TAG, t.toString());
                 }
             });
+        } else {
+            moviesFromDB();
         }
-
-
     }
 
-    public void moviesFromDB() {
-
-        //   mMovies = new ArrayList<>();
-
-        final int noOfColumns = getResources().getInteger(R.integer.no_of_columns);
-        GridLayoutManager layoutManager =
-                new GridLayoutManager(mContext, noOfColumns);
-
-        /* Association of the LayoutManager with the RecyclerView */
-        mRecyclerView.setLayoutManager(layoutManager);
-
-        /*
-         * Setting to improve performance when changes in content do not
-         * change the child layout size in the RecyclerView
-         */
-        mRecyclerView.setHasFixedSize(true);
+    private void moviesFromDB() {
         Uri uri = MoviesContract.MoviesEntry.CONTENT_URI;
         ContentResolver resolver = getActivity().getContentResolver();
         Cursor moviesResponse = resolver.query(uri, null, null, null, null);
-        // Create an empty ArrayList that we can start adding movies to
 
+        if (moviesResponse.getCount() <= 0) {
+            showNoFavMovieMessage();
+            return;
+        }
+        // Create an empty ArrayList that we can start adding movies to
         ArrayList<Movie> movies = new ArrayList<>();
 
         for (int i = 0; i < moviesResponse.getCount(); i++) {
@@ -256,7 +226,6 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
 
             moviesResponse.moveToPosition(i);
 
-
             movies.add(new Movie(
                     moviesResponse.getString(movieTitleIndex),
                     moviesResponse.getString(posterPathIndex),
@@ -266,20 +235,26 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
                     moviesResponse.getString(overviewIndex),
                     moviesResponse.getFloat(voteAverageIndex),
                     moviesResponse.getInt(voteCountIndex)
-
             ));
-
-            Log.d(TAG, "fav movie: " + movies.get(i).getTitle());
         }
         /* Setting the adapter attaches it to the RecyclerView in our layout. */
         mFavMoviesAdapter.setMoviesData(movies);
 
-
         /* Setting the adapter attaches it to the RecyclerView in our layout. */
         mRecyclerView.setAdapter(mFavMoviesAdapter);
         showMovieDataView();
-
-
+        moviesResponse.close();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Check which request we're responding to
+        if (requestCode == CHANGES_IN_FAV_MOVIES) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                moviesRequest();
+            }
+        }
+    }
 }

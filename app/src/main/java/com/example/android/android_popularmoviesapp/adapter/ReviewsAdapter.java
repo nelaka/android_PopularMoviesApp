@@ -7,16 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.example.android.android_popularmoviesapp.R;
 import com.example.android.android_popularmoviesapp.model.Review;
+
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsViewHolder> {
     private final Context mContext;
     private List<Review> mReviews;
-    private static final String TAG = ReviewsAdapter.class.getSimpleName();
     private final ReviewsAdapterOnClickHandler mClickHandler;
 
     public ReviewsAdapter(Context context, ReviewsAdapterOnClickHandler clickHandler, List<Review> reviews) {
@@ -36,8 +38,11 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
     @Override
     public void onBindViewHolder(@NonNull ReviewsViewHolder holder, int position) {
         Review review = mReviews.get(position);
-        holder.reviewAuthorView.setText("by " + review.getAuthor());
-        holder.reviewTextView.setText(review.getContent());
+        if (review.getContent() != null) {
+            String authorString = "by " + review.getAuthor();
+            holder.reviewAuthorView.setText(authorString);
+            holder.reviewTextView.setText(review.getContent());
+        }
     }
 
     @Override
@@ -72,6 +77,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
         @BindView(R.id.review_tv)
         TextView reviewTextView;
 
+
         public ReviewsViewHolder(View view, ReviewsAdapterOnClickHandler clickHandler, List<Review> reviews) {
             super(view);
             mClickHandler = clickHandler;
@@ -79,7 +85,6 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
             ButterKnife.bind(this, view);
             view.setOnClickListener(this);
         }
-
 
         @Override
         public void onClick(View view) {

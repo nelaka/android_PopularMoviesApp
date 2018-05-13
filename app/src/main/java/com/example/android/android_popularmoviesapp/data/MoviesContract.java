@@ -22,7 +22,7 @@ public class MoviesContract {
      * Use CONTENT_AUTHORITY to create the base of all URI's which apps will use to contact
      * the content provider for Sunshine.
      */
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     /*
      * Possible paths that can be appended to BASE_CONTENT_URI to form valid URI's that Sunshine

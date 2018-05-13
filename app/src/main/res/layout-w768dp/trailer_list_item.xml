@@ -10,8 +10,8 @@
 
     <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/trailer_iv"
-        android:layout_width="125dp"
-        android:layout_height="90dp"
+        android:layout_width="256dp"
+        android:layout_height="144dp"
         android:contentDescription="@string/trailer_desc"
         android:src="@drawable/ic_launcher" />
 </android.support.v7.widget.CardView>

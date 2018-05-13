@@ -20,34 +20,19 @@ public class ReviewsResponse implements Parcelable {
     };
 
     @SerializedName("id")
-    private String mId;
+    private final String mId;
     @SerializedName("page")
-    private String mPage;
+    private final String mPage;
     @SerializedName("results")
-    private List<Review> mReviews;
+    private final List<Review> mReviews;
     @SerializedName("total_results")
-    private String mTotalResults;
-
-    public ReviewsResponse(String id, String page, List<Review> reviews, String totalResults) {
-        mId = id;
-        mPage = page;
-        mReviews = reviews;
-        mTotalResults = totalResults;
-    }
+    private final String mTotalResults;
 
     private ReviewsResponse(Parcel in) {
         mId = in.readString();
         mPage = in.readString();
         mReviews = in.readArrayList(Review.class.getClassLoader());
         mTotalResults = in.readString();
-    }
-
-    public String getId() {
-        return mId;
-    }
-
-    public void setId(String id) {
-        mId = id;
     }
 
     public List<Review> getReviews() {

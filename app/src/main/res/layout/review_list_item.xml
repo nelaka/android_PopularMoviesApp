@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/list_item_review"
     android:orientation="vertical">
 
-
     <TextView
         android:id="@+id/review_author_tv"
-        android:layout_width="wrap_content"
+        style="@style/blueSubTitles"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/default_padding"
         android:paddingRight="@dimen/default_padding"
         android:paddingTop="@dimen/default_padding"
-        android:textSize="@dimen/text_size_review_subtext" />
+        android:layout_width="match_parent"
+        android:textStyle="italic" />
 
     <TextView
         android:id="@+id/review_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/default_padding"
         android:paddingRight="@dimen/default_padding"
@@ -26,23 +25,12 @@
         android:text="@string/review"
         android:textSize="@dimen/text_size_review_text" />
 
-
     <TextView
-        android:id="@+id/tv_error_message_display"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/default_padding"
-        android:text="@string/error_message"
-        android:textSize="@dimen/text_size_error_message"
-        android:visibility="invisible" />
-
-    <!-- A progress bar that will be shown to users to indicate that movies data are loading -->
-    <ProgressBar
-        android:id="@+id/pb_loading_indicator"
-        android:layout_width="@dimen/progress_bar_dimension"
-        android:layout_height="@dimen/progress_bar_dimension"
-        android:layout_gravity="center"
-        android:visibility="invisible" />
-
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingRight="@dimen/default_padding"
+        android:paddingTop="@dimen/default_padding_small"
+        android:text="@string/reviews_divider" />
 
 </LinearLayout>

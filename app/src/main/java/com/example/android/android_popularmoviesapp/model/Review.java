@@ -18,13 +18,13 @@ public class Review implements Parcelable {
     };
 
     @SerializedName("author")
-    private String mAuthor;
+    private final String mAuthor;
     @SerializedName("content")
-    private String mContent;
+    private final String mContent;
     @SerializedName("id")
-    private String mId;
+    private final String mId;
     @SerializedName("url")
-    private String mUrl;
+    private final String mUrl;
 
     public Review(String author, String content, String id, String url) {
         mAuthor = author;
@@ -47,11 +47,6 @@ public class Review implements Parcelable {
     public String getContent() {
         return mContent;
     }
-
-    public String getId() {
-        return mId;
-    }
-
     public String getReviewUrl() {
         return mUrl;
     }

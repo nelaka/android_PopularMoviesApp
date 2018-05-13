@@ -20,13 +20,13 @@ public class MoviesResponse implements Parcelable {
         }
     };
     @SerializedName("page")
-    private int mPage;
+    private final int mPage;
     @SerializedName("results")
-    private ArrayList<Movie> mResults;
+    private final ArrayList<Movie> mResults;
     @SerializedName("total_results")
-    private int mTotalResults;
+    private final int mTotalResults;
     @SerializedName("total_pages")
-    private int mTotalPages;
+    private final int mTotalPages;
 
     private MoviesResponse(Parcel in) {
         mPage = in.readInt();
@@ -48,7 +48,7 @@ public class MoviesResponse implements Parcelable {
     public void writeToParcel(Parcel out, int flags) {
         out.writeInt(mPage);
         out.writeList(mResults);
-        out.writeInt(mTotalPages);
+        out.writeInt(mTotalResults);
         out.writeInt(mTotalPages);
     }
 }

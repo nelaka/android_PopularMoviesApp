@@ -6,14 +6,19 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="cardViewStyle">@style/CardView</item>
+
     </style>
     <style name="FabStyle">
-
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="rippleColor">@color/colorAccent</item>
+    </style>
 
+    <style name="blueSubTitles">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">@dimen/text_basic</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

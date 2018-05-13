@@ -34,13 +34,16 @@
     <!-- Value in SharedPreferences for default option -->
     <string name="pref_sort_by_default" translatable="false">popular</string>
 
-    <string name="vote_average">Vote Average:</string>
+    <string name="vote_average">Vote Average: </string>
     <string name="release_date">Release Date:</string>
 
     <string name="error_message">
         A network error has occurred. No connection. Please try again.
     </string>
-    <string name="movie_s_vote_average">Movie\'s Vote Average</string>
+    <string name="movie_s_vote_average">Movie\'s Vote Average </string>
+    <string name="parenthesis_left">(</string>
+    <string name="movie_s_vote_count">Movie\'s Vote Count</string>
+    <string name="votes_plus_parenthesis_right">votes)</string>
     <string name="movie_s_date">Movie\'s Date</string>
     <string name="movie_s_desc">Movie\'s Desc</string>
     <string name="movie_s_title">Movie\'s Title</string>
@@ -50,10 +53,10 @@
     <string name="msg_added_to_fav">The movie is now in favorite list</string>
     <string name="msg_removed_from_fav">The movie was removed from favorite list</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_share">Share</string>
-    <string name="review_s_title">Review</string>
-    <string name="review">mpla mpla mpla mlpa</string>
 
+    <string name="review">Content of the review</string>
+    <string name="no_fav_movies_message">You don\'t have any favorite movie yet. :(</string>
+    <string name="reviews">Reviews</string>
+    <string name="reviews_divider">-------</string>
 </resources>

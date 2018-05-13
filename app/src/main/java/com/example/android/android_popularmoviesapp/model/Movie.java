@@ -19,21 +19,21 @@ public class Movie implements Parcelable {
 
 
     @SerializedName("poster_path")
-    private String mPosterUrl;
+    private final String mPosterUrl;
     @SerializedName("overview")
-    private String mOverview; //plot synopsis
+    private final String mOverview; //plot synopsis
     @SerializedName("release_date")
-    private String mReleaseDate;
+    private final String mReleaseDate;
     @SerializedName("id")
-    private Integer mPosterId;
+    private final Integer mPosterId;
     @SerializedName("title")
-    private String mTitle;
+    private final String mTitle;
     @SerializedName("backdrop_path")
-    private String mBackdropPath;
+    private final String mBackdropPath;
     @SerializedName("vote_count")
-    private Integer mVoteCount;    //vote count
+    private final Integer mVoteCount;    //vote count
     @SerializedName("vote_average")     //user rating
-    private Float mVoteAverage;
+    private final Float mVoteAverage;
 
     public Movie(String title, String posterUrl, int posterId, String backdropPath, String releaseDate, String overview, float voteAverage, int voteCount) {
         mTitle = title;

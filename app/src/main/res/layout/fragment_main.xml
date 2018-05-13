@@ -27,4 +27,14 @@
         android:layout_gravity="center"
         android:visibility="invisible" />
 
+    <!-- A message when there are no favorite movies in user list -->
+    <TextView
+        android:id="@+id/tv_no_fav_movies_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/default_padding"
+        android:text="@string/no_fav_movies_message"
+        android:textSize="@dimen/text_size_error_message"
+        android:visibility="invisible" />
+
 </FrameLayout>

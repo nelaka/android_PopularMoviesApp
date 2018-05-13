@@ -28,8 +28,8 @@ import static com.example.android.android_popularmoviesapp.data.MoviesContract.M
          * advantage of the UriMatcher class to make that matching MUCH easier than doing something
          * ourselves, such as using regular expressions.
          */
-        public static final int CODE_MOVIES = 100;
-        public static final int CODE_MOVIE_WITH_ID = 101;
+        private static final int CODE_MOVIES = 100;
+    private static final int CODE_MOVIE_WITH_ID = 101;
 
         /*
          * The URI Matcher used by this content provider. The leading "s" in this variable name
@@ -57,7 +57,7 @@ import static com.example.android.android_popularmoviesapp.data.MoviesContract.M
          *
          * @return A UriMatcher that correctly matches the constants for CODE_WEATHER and CODE_WEATHER_WITH_DATE
          */
-        public static UriMatcher buildUriMatcher() {
+       private static UriMatcher buildUriMatcher() {
 
             /*
              * All paths added to the UriMatcher have a corresponding code to return when a match is

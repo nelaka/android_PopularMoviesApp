@@ -18,10 +18,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder> {
 
-    private static final String TAG = MoviesAdapter.class.getSimpleName();
     private static final String POSTER_WIDTH = "w185";
     private static final String POSTER_IMAGES_URL = "http://image.tmdb.org/t/p";
     @BindView(R.id.list_item_poster)
@@ -35,13 +33,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         mContext = context;
         mClickHandler = clickHandler;
     }
-
-    public MoviesAdapter(@NonNull Context context, List<Movie> movies, MoviesAdapterOnClickHandler clickHandler) {
-        mContext = context;
-        mMovies = movies;
-        mClickHandler = clickHandler;
-    }
-
 
     @NonNull
     @Override
@@ -60,7 +51,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         String movieUrl = POSTER_IMAGES_URL + "/" + POSTER_WIDTH + movie.getPosterUrl();
         Picasso.with(moviesViewHolder.posterView.getContext()).load(movieUrl)
                 .placeholder(R.drawable.movie_placeholder)
-                .error(R.drawable.no_image)
+                .error(R.drawable.movie_placeholder)
                 .into(moviesViewHolder.posterView);
     }
 
@@ -81,7 +72,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         notifyDataSetChanged();
     }
 
-
     /**
      * The interface that receives onClick messages.
      */
@@ -94,7 +84,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         private final MoviesAdapter.MoviesAdapterOnClickHandler mClickHandler;
         @BindView(R.id.list_item_poster)
         ImageView posterView;
-        private List<Movie> mMovies;
+        private final List<Movie> mMovies;
 
         public MoviesViewHolder(View view, MoviesAdapter.MoviesAdapterOnClickHandler clickHandler, List<Movie> movies) {
             super(view);
@@ -109,7 +99,5 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
             int adapterPosition = getAdapterPosition();
             mClickHandler.onClick(mMovies.get(adapterPosition));
         }
-
-
     }
 }

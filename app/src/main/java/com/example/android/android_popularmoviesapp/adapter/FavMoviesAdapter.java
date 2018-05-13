@@ -1,7 +1,6 @@
 package com.example.android.android_popularmoviesapp.adapter;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,25 +25,19 @@ public class FavMoviesAdapter extends RecyclerView.Adapter<FavMoviesAdapter.FavM
 
     /* The context we use to utility methods, app resources and layout inflaters */
     private final Context mContext;
-    private final Cursor mCursor;
     private final FavMoviesAdapterOnClickHandler mClickHandler;
     private List<Movie> mFavMovies;
 
-    public FavMoviesAdapter(@NonNull Context context, Cursor cursor, FavMoviesAdapterOnClickHandler clickHandler) {
+    public FavMoviesAdapter(@NonNull Context context, FavMoviesAdapterOnClickHandler clickHandler) {
         mContext = context;
-        mCursor = cursor;
         mClickHandler = clickHandler;
     }
 
-    public FavMoviesAdapter(@NonNull Context context, List<Movie> movies, Cursor cursor, FavMoviesAdapterOnClickHandler clickHandler) {
+    public FavMoviesAdapter(@NonNull Context context, List<Movie> movies, FavMoviesAdapterOnClickHandler clickHandler) {
         mContext = context;
         mFavMovies = movies;
-        mCursor = cursor;
         mClickHandler = clickHandler;
-
     }
-
-
 
     @NonNull
     @Override
@@ -63,7 +56,7 @@ public class FavMoviesAdapter extends RecyclerView.Adapter<FavMoviesAdapter.FavM
         String movieUrl = POSTER_IMAGES_URL + "/" + POSTER_WIDTH + movie.getPosterUrl();
         Picasso.with(holder.posterView.getContext()).load(movieUrl)
                 .placeholder(R.drawable.movie_placeholder)
-                .error(R.drawable.no_image)
+                .error(R.drawable.movie_placeholder)
                 .into(holder.posterView);
     }
 
@@ -84,7 +77,6 @@ public class FavMoviesAdapter extends RecyclerView.Adapter<FavMoviesAdapter.FavM
         notifyDataSetChanged();
     }
 
-
     /**
      * The interface that receives onClick messages.
      */
@@ -97,7 +89,7 @@ public class FavMoviesAdapter extends RecyclerView.Adapter<FavMoviesAdapter.FavM
         private final FavMoviesAdapterOnClickHandler mClickHandler;
         @BindView(R.id.list_item_poster)
         ImageView posterView;
-        private List<Movie> mFavMovies;
+        private final List<Movie> mFavMovies;
 
         public FavMoviesViewHolder(View view, FavMoviesAdapterOnClickHandler clickHandler, List<Movie> movies) {
             super(view);
@@ -112,7 +104,5 @@ public class FavMoviesAdapter extends RecyclerView.Adapter<FavMoviesAdapter.FavM
             int adapterPosition = getAdapterPosition();
             mClickHandler.onClick(mFavMovies.get(adapterPosition));
         }
-
     }
-
 }

@@ -3,7 +3,6 @@ package com.example.android.android_popularmoviesapp.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,7 @@ import butterknife.ButterKnife;
 
 
 public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.TrailersViewHolder> {
-    private static final String TAG = TrailersAdapter.class.getSimpleName();
+
     /* The context we use to utility methods, app resources and layout inflaters */
     private final Context mContext;
     private List<Trailer> mTrailers;
@@ -32,36 +31,31 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
         mClickHandler = clickHandler;
     }
 
-
     @NonNull
     @Override
     public TrailersAdapter.TrailersViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-
         View view = LayoutInflater.from(mContext).inflate(R.layout.trailer_list_item, viewGroup, false);
 
         view.setFocusable(true);
         return new TrailersViewHolder(view, mClickHandler, mTrailers);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull TrailersViewHolder holder, int position) {
         Trailer trailer = mTrailers.get(position);
 
         String img_url = "https://img.youtube.com/vi/" + trailer.getKey() + "/0.jpg"; // this is link which will give u thumbnail image of that video
-        Log.v(TAG, "TRAILER IMG_URL = " + img_url);
+
         Picasso.with(holder.trailerView.getContext()).load(img_url)
-                //   .placeholder(R.drawable.ic_launcher_foreground)
+                .placeholder(R.drawable.ic_launcher)
                 .into(holder.trailerView);
     }
 
     @Override
     public int getItemCount() {
-
         if (null == mTrailers) return 0;
         return mTrailers.size();
     }
-
 
     /**
      * This method is used to set the movies on a MoviesAdapter if we've already
@@ -101,15 +95,4 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
             mClickHandler.onClick(mTrailers.get(adapterPosition));
         }
     }
-
-
 }
-
-
-
-
-
-
-
-
-
