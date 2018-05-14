@@ -32,7 +32,7 @@ And you should then put the key in build.gradle (Module app) where you can find 
 
 
 <h2> App's screenshots</h2>
-<p><img src="screenshots/popular_movies_1.png" width="33%"/>   <img src="screenshots/popular_movies_2.png" width="60%"/></p>
+<p><img src="screenshots/popular_movies_1.png" width="33%"/>   <img src="screenshots/popular_movies_2.png" width="33%"/></p>
 <p><img src="screenshots/popular_movies_3.png" width="33%"/>   <img src="screenshots/popular_movies_4.png" width="33%"/></p>
-<p><img src="screenshots/popular_movies_5.png" width="33%"/>   <img src="screenshots/popular_movies_6.png" width="60%"/></p>
+<p><img src="screenshots/popular_movies_5.png" width="60%"/>   </p>
 
