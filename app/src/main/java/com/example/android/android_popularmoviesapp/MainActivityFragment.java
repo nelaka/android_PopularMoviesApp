@@ -7,6 +7,9 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
@@ -41,9 +44,12 @@ import static android.app.Activity.RESULT_OK;
 
 public class MainActivityFragment extends Fragment implements MoviesAdapter.MoviesAdapterOnClickHandler,
         FavMoviesAdapter.FavMoviesAdapterOnClickHandler, SharedPreferences.OnSharedPreferenceChangeListener {
+
     private static final int CHANGES_IN_FAV_MOVIES = 1;  // The request code
     private static final String TAG = MainActivityFragment.class.getSimpleName();
     private static boolean PREFERENCES_HAVE_BEEN_UPDATED = false;
+    private static final String BUNDLE_RECYCLER_LAYOUT = "recycler.layout";
+
     @BindView(R.id.movies_rv)
     RecyclerView mRecyclerView;
     @BindView(R.id.pb_loading_indicator)
@@ -52,12 +58,12 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
     TextView mErrorMessageDisplay;
     @BindView(R.id.tv_no_fav_movies_display)
     TextView mNoFavMovieMessageDisplay;
-    private ArrayList<Movie> mMovies, mFavMovies;
+    private ArrayList<Movie> mMovies;
     private MoviesAdapter mMoviesAdapter;
     private FavMoviesAdapter mFavMoviesAdapter;
     private Context mContext;
-    RecyclerView.OnScrollListener mScrollListener;
-    private int mPosition;
+    private Parcelable mSavedRecyclerLayoutState;
+    private GridLayoutManager layoutManager;
 
     public MainActivityFragment() {
         // Required empty public constructor
@@ -66,11 +72,21 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRetainInstance(true);
         mContext = getActivity();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, mRecyclerView.getLayoutManager().onSaveInstanceState());
+        outState.putParcelableArrayList("movies", mMovies);
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, rootView);
@@ -78,12 +94,42 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
         mMoviesAdapter = new MoviesAdapter(mContext, this);
         mFavMoviesAdapter = new FavMoviesAdapter(mContext, this);
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(BUNDLE_RECYCLER_LAYOUT)) {
+            mSavedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+            layoutManager.onRestoreInstanceState(mSavedRecyclerLayoutState);
+            mMovies = savedInstanceState.getParcelableArrayList("movies");
+        }
+
         moviesRequest();
 
         PreferenceManager.getDefaultSharedPreferences(mContext)
                 .registerOnSharedPreferenceChangeListener(this);
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(BUNDLE_RECYCLER_LAYOUT)) {
+                mSavedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+                layoutManager.onRestoreInstanceState(mSavedRecyclerLayoutState);
+            }
+            if (savedInstanceState.containsKey("movies")) {
+                mMovies = savedInstanceState.getParcelableArrayList("movies");
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (mSavedRecyclerLayoutState != null) {
+            layoutManager.onRestoreInstanceState(mSavedRecyclerLayoutState);
+        }
     }
 
     @Override
@@ -131,6 +177,7 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
         if (PREFERENCES_HAVE_BEEN_UPDATED) {
             Log.d(TAG, "onStart: preferences were updated");
             moviesRequest();
+            // Display the current selected movie title on the Action Bar
             PREFERENCES_HAVE_BEEN_UPDATED = false;
         }
     }
@@ -154,7 +201,7 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
         }
 
         final int noOfColumns = getResources().getInteger(R.integer.no_of_columns);
-        GridLayoutManager layoutManager =
+        layoutManager =
                 new GridLayoutManager(mContext, noOfColumns);
 
         /* Association of the LayoutManager with the RecyclerView */
@@ -165,8 +212,10 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
          * change the child layout size in the RecyclerView
          */
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addOnScrollListener(mScrollListener);
+
         sortBy = MoviesPreferences.getPreferredSortBy(mContext);
+
+        mLoadingIndicator.setVisibility(View.VISIBLE);
 
         if (!sortBy.equals(mContext.getString(R.string.pref_sort_by_fav))) {
 
@@ -176,28 +225,31 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
             call.enqueue(new Callback<MoviesResponse>() {
 
                 @Override
-                public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
-
+                public void onResponse(@NonNull Call<MoviesResponse> call, @NonNull Response<MoviesResponse> response) {
                     mMovies = response.body().getResults();
                     Log.d(TAG, "Number of results received: " + mMovies.size());
-
-                    /* Setting the adapter attaches it to the RecyclerView in our layout. */
-                    mMoviesAdapter.setMoviesData(mMovies);
-                    mRecyclerView.setAdapter(mMoviesAdapter);
-
-                    /* Setting the adapter attaches it to the RecyclerView in our layout. */
-                    mRecyclerView.setAdapter(mMoviesAdapter);
-                    showMovieDataView();
+                    mLoadingIndicator.setVisibility(View.INVISIBLE);
+                    if (mMovies != null) {
+                        mMoviesAdapter.setMoviesData(mMovies);
+                        mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+                        /* Setting the adapter attaches it to the RecyclerView in our layout. */
+                        mRecyclerView.setAdapter(mMoviesAdapter);
+                        showMovieDataView();
+                    } else {
+                        showErrorMessage();
+                    }
                 }
 
                 @Override
-                public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                public void onFailure(@NonNull Call<MoviesResponse> call, @NonNull Throwable t) {
+                    mLoadingIndicator.setVisibility(View.INVISIBLE);
                     showErrorMessage();
                     // Log error here since request failed
                     Log.e(TAG, t.toString());
                 }
             });
         } else {
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
             moviesFromDB();
         }
     }
@@ -253,6 +305,7 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
         if (requestCode == CHANGES_IN_FAV_MOVIES) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
+                mSavedRecyclerLayoutState = mRecyclerView.getLayoutManager().onSaveInstanceState();
                 moviesRequest();
             }
         }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -72,8 +73,6 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
     RecyclerView mTrailersRV;
     @BindView(R.id.pb_loading_indicator)
     ProgressBar mLoadingIndicator;
-    @BindView(R.id.tv_error_message_display)
-    TextView mErrorMessageDisplay;
 
     private ReviewsAdapter mReviewsAdapter;
     private TrailersAdapter mTrailersAdapter;
@@ -128,11 +127,11 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
 
             List<Review> fakeList1 = new ArrayList<>();
             mReviewsAdapter = new ReviewsAdapter(getBaseContext(), this, fakeList1);
-            apiRequest(Utils.theMovieDbApiKey, mReviewsRV, LinearLayoutManager.VERTICAL);
+            apiRequest(mReviewsRV, LinearLayoutManager.VERTICAL);
 
             List<Trailer> fakeList2 = new ArrayList<>();
             mTrailersAdapter = new TrailersAdapter(getBaseContext(), this, fakeList2);
-            apiRequest(Utils.theMovieDbApiKey, mTrailersRV, LinearLayoutManager.HORIZONTAL);
+            apiRequest(mTrailersRV, LinearLayoutManager.HORIZONTAL);
         }
     }
 
@@ -180,8 +179,10 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
         return shareIntent;
     }
 
-    public void apiRequest(String api_key, final RecyclerView mRecyclerView, int orientation) {
-        if (api_key.isEmpty()) {
+    private void apiRequest(final RecyclerView mRecyclerView, int orientation) {
+        String API_KEY = Utils.theMovieDbApiKey;
+
+        if (API_KEY.isEmpty()) {
             Toast.makeText(getBaseContext(), "Please obtain your API KEY first from themoviedb.org", Toast.LENGTH_LONG).show();
             return;
         }
@@ -200,15 +201,17 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
 
         ApiInterface apiService =
                 APIClient.getClient().create(ApiInterface.class);
+        mLoadingIndicator.setVisibility(View.VISIBLE);
 
         if (mRecyclerView == mTrailersRV) {
-            Call<TrailersResponse> call = apiService.getTrailers(mMovie.getPosterId(), api_key);
+            Call<TrailersResponse> call = apiService.getTrailers(mMovie.getPosterId(), API_KEY);
 
             call.enqueue(new Callback<TrailersResponse>() {
 
                 @Override
-                public void onResponse(Call<TrailersResponse> call, Response<TrailersResponse> response) {
+                public void onResponse(@NonNull Call<TrailersResponse> call, @NonNull Response<TrailersResponse> response) {
                     mTrailers = response.body().getTrailers();
+                    mLoadingIndicator.setVisibility(View.INVISIBLE);
                     Log.d(TAG, "Number of trailers received: " + mTrailers.size());
 
                     /* Setting the adapter attaches it to the RecyclerView in our layout. */
@@ -217,18 +220,20 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
                 }
 
                 @Override
-                public void onFailure(Call<TrailersResponse> call, Throwable t) {
+                public void onFailure(@NonNull Call<TrailersResponse> call, @NonNull Throwable t) {
+                    mLoadingIndicator.setVisibility(View.INVISIBLE);
                     // Log error here since request failed
                     Log.e(TAG, t.toString());
                 }
             });
         } else {
-            Call<ReviewsResponse> call = apiService.getReviews(mMovie.getPosterId(), api_key);
+            Call<ReviewsResponse> call = apiService.getReviews(mMovie.getPosterId(), API_KEY);
             call.enqueue(new Callback<ReviewsResponse>() {
 
                 @Override
-                public void onResponse(Call<ReviewsResponse> call, Response<ReviewsResponse> response) {
+                public void onResponse(@NonNull Call<ReviewsResponse> call, @NonNull Response<ReviewsResponse> response) {
                     mReviews = response.body().getReviews();
+                    mLoadingIndicator.setVisibility(View.INVISIBLE);
                     Log.d(TAG, "Number of reviews received: " + mReviews.size());
 
                     if (mReviews.size() > 0) reviewsTextView.setVisibility(View.VISIBLE);
@@ -239,7 +244,8 @@ public class DetailActivity extends AppCompatActivity implements ReviewsAdapter.
                 }
 
                 @Override
-                public void onFailure(Call<ReviewsResponse> call, Throwable t) {
+                public void onFailure(@NonNull Call<ReviewsResponse> call, @NonNull Throwable t) {
+                    mLoadingIndicator.setVisibility(View.INVISIBLE);
                     // Log error here since request failed
                     Log.e(TAG, t.toString());
                 }

@@ -37,9 +37,6 @@
     <string name="vote_average">Vote Average: </string>
     <string name="release_date">Release Date:</string>
 
-    <string name="error_message">
-        A network error has occurred. No connection. Please try again.
-    </string>
     <string name="movie_s_vote_average">Movie\'s Vote Average </string>
     <string name="parenthesis_left">(</string>
     <string name="movie_s_vote_count">Movie\'s Vote Count</string>
@@ -47,6 +44,10 @@
     <string name="movie_s_date">Movie\'s Date</string>
     <string name="movie_s_desc">Movie\'s Desc</string>
     <string name="movie_s_title">Movie\'s Title</string>
+
+    <string name="error_message">
+        A network error has occurred. No connection. Please try again.
+    </string>
 
     <string name="trailer_desc">Trailer of the movie</string>
 
