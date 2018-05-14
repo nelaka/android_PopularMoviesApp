@@ -31,15 +31,16 @@
                 style="@style/FabStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/default_padding"
+                android:layout_marginStart="@dimen/default_padding"
                 android:layout_marginTop="@dimen/default_padding"
                 android:src="@drawable/ic_favorite_border_white_24dp"
                 app:backgroundTint="@color/colorPrimary"
                 app:fabSize="normal"
+                app:layout_constraintBottom_toBottomOf="@+id/movie_poster_iv"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.083"
                 app:layout_constraintStart_toEndOf="@+id/movie_poster_iv"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/movie_vote_average_ll" />
 
             <TextView
                 android:id="@+id/movie_title_tv"
@@ -51,8 +52,10 @@
                 android:paddingRight="@dimen/default_padding"
                 android:text="@string/movie_s_title"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                app:layout_constraintBottom_toBottomOf="@+id/movie_poster_iv"
                 app:layout_constraintStart_toEndOf="@+id/movie_poster_iv"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/movie_desc_tv"
@@ -75,14 +78,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_padding"
-                android:layout_marginTop="@dimen/default_padding"
+                android:layout_marginTop="32dp"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/default_padding"
                 android:paddingRight="@dimen/default_padding"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/movie_poster_iv"
-                app:layout_constraintTop_toBottomOf="@+id/fab">
+                app:layout_constraintTop_toBottomOf="@+id/movie_title_tv">
 
                 <TextView
                     style="@style/blueSubTitles"
@@ -115,7 +118,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/movie_poster_iv"
-                app:layout_constraintTop_toBottomOf="@+id/movie_release_ll">
+                app:layout_constraintTop_toBottomOf="@+id/movie_release_ll"
+                app:layout_constraintVertical_bias="0.097">
 
                 <TextView
                     style="@style/blueSubTitles"
@@ -173,8 +177,10 @@
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.438"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/movie_poster_iv" />
+                app:layout_constraintTop_toTopOf="@id/movie_poster_iv"
+                app:layout_constraintVertical_bias="0.512" />
 
             <TextView
                 android:id="@+id/tv_error_message_display"
@@ -191,7 +197,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.246" />
 
 
         </android.support.constraint.ConstraintLayout>

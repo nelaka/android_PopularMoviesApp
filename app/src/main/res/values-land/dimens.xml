@@ -2,7 +2,7 @@
 <resources>
     <integer name="no_of_columns">5</integer>
     <dimen name="poster_height">185dp</dimen>
-    <dimen name="poster_width">300dp</dimen>
+    <dimen name="poster_width">280dp</dimen>
     <dimen name="default_padding">16dp</dimen>
     <dimen name="default_padding_small">8dp</dimen>
     <dimen name="text_size_error_message">20sp</dimen>
