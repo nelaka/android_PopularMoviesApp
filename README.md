@@ -1,5 +1,5 @@
 # Popular Movies App (stage2)
-Popular Movies App is an app which displays the popular movies from The Movie Database (TMDb) sort by popularity or rating.
+Popular Movies App is an app which displays the popular movies from The Movie Database (TMDb) sort by popularity or rating. It also collects and displays user's favorite movies.
 
 It is a project during Udacity's Android Developer Nanodegree Program.
 
