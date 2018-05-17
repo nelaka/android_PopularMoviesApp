@@ -73,16 +73,15 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setRetainInstance(true);
         mContext = getActivity();
     }
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, mRecyclerView.getLayoutManager().onSaveInstanceState());
-        outState.putParcelableArrayList("movies", mMovies);
     }
 
     @Override
@@ -94,12 +93,9 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
         mMoviesAdapter = new MoviesAdapter(mContext, this);
         mFavMoviesAdapter = new FavMoviesAdapter(mContext, this);
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(BUNDLE_RECYCLER_LAYOUT)) {
+        if (savedInstanceState != null) {
             mSavedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
-            layoutManager.onRestoreInstanceState(mSavedRecyclerLayoutState);
-            mMovies = savedInstanceState.getParcelableArrayList("movies");
         }
-
         moviesRequest();
 
         PreferenceManager.getDefaultSharedPreferences(mContext)
@@ -117,18 +113,6 @@ public class MainActivityFragment extends Fragment implements MoviesAdapter.Movi
                 mSavedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
                 layoutManager.onRestoreInstanceState(mSavedRecyclerLayoutState);
             }
-            if (savedInstanceState.containsKey("movies")) {
-                mMovies = savedInstanceState.getParcelableArrayList("movies");
-            }
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (mSavedRecyclerLayoutState != null) {
-            layoutManager.onRestoreInstanceState(mSavedRecyclerLayoutState);
         }
     }
 
